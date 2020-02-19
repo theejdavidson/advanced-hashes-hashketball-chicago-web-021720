@@ -107,25 +107,20 @@ def game_hash
   }
 end
 
+def merge_teams
+  game_hash.values.map { |team| team[:players] }.flatten
+end
+
 def num_points_scored(player_name)
-  game_hash.each do |location, team_data|
-    players = team_data[:players]
-    player = players.find { |player| player_name == player[:player_name]}
-    if(player)
-      return player[:points]
-    end
-  end
+  players = merge_teams
+  selected_player = players.select { |player| player[:player_name] == player_name }
+  selected_player[0][:points]
 end
 
 def shoe_size(player_name)
-  game_hash.each do |location, team_data|
-    players = team_data[:players]
-    players.each do |player|
-        if(player_name == player[:player_name])
-            return player[:shoe]
-        end
-    end
-  end
+  players = merge_teams
+  selected_player = players.select { |player| player[:player_name] == player_name }
+  selected_player[0][:shoe]
 end
 
 def team_colors(team_name)
